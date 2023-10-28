@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Wheather App</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" name="" id="" placeholder="Enter City Name">
+            <button><img src="search.png" alt=""></button>
+        </div>
+        <div class="wheather">
+            <img src="sun.png" alt="" class="wheather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="City">City</h2>
+            <div class="detail">
+                <div class="col">
+                    <img src="wind.png" alt="">
+                    <div>
+                        <div class="wind">20km/hr</div>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="humidity.png" alt="">
+                    <div>
+                        <div class="humidity">15%</div>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        const apikey = "2f778a3ddfabd96464a3690b10a7fdcf"
+        const apiurl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+        const wheatherIcon=document.querySelector(".wheather-icon")
+        async function checkweather(City) {
+            const response = await fetch(apiurl + City + `&appid=${apikey}`);
+            var data = await response.json()
+            console.log(data)
+            document.querySelector(".City").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = data.main.temp + "°C";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+        if (data.weather[0].main=='Clouds'){
+            wheatherIcon.src="cloudy-day.png"
+        }
+        else if(data.weather[0].main=='Clear'){
+            wheatherIcon.src="sun.png"
+        }
+        else if(data.weather[0].main=='Rain'){
+            wheatherIcon.src="rainy.png"
+        }
+        
+        }
+        searchBtn.addEventListener('click', () => {
+            checkweather(searchBox.value);
+        })
+    </script>
+</body>
+
+</html>
